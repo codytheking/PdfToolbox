@@ -1,7 +1,7 @@
 /**
  * 
  * @author Cody King 
- * @version 
+ * @version 0.0.1 - 12-12-2018
  */
 
 import java.io.File;
@@ -52,7 +52,7 @@ public class PdfUtils extends Application
 	@Override
 	public void start(Stage primaryStage)
 	{
-		primaryStage.setTitle("PDF Merger");
+		primaryStage.setTitle("PDF Toolbox");
 		pane.setAlignment(Pos.CENTER);
 		pane.setPadding(new Insets(11.5, 12.5, 13.5, 14.5));
 		pane.setHgap(5.5);
@@ -214,15 +214,15 @@ public class PdfUtils extends Application
 		grid.setPadding(new Insets(25, 25, 25, 25));
 
 		Stage aboutStage = new Stage();
-		aboutStage.setTitle("About Loan Calculator");
+		aboutStage.setTitle("About PDF Toolbox");
 		aboutStage.setScene(new Scene(grid, 250, 225));
 
-		Text aboutText = new Text("King's Loan Calculator");
+		Text aboutText = new Text("King's PDF Toolbox");
 		aboutText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
 		Text coderText = new Text("Created by Cody King\nFeel free to redistribute application and\n"
 				+ "adapt code to fit your needs.");
 		coderText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
-		Text verText = new Text("Ver 1.0");
+		Text verText = new Text("Ver 0.0.1 - 12-12-2018");
 		verText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
 
 		grid.add(aboutText, 0, 0);
@@ -241,13 +241,12 @@ public class PdfUtils extends Application
 		grid.setPadding(new Insets(25, 25, 25, 25));
 
 		Stage aboutStage = new Stage();
-		aboutStage.setTitle("Help - Loan Calculator");
+		aboutStage.setTitle("Help - PDF Toolbox");
 		aboutStage.setScene(new Scene(grid, 350, 275));
 
-		Text aboutText = new Text("King's Loan Calculator");
+		Text aboutText = new Text("King's PDF Toolbox");
 		aboutText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-		Text coderText = new Text("Only one field may be left blank (the value being calculated)\n" +
-				"Negative values mean money has been deposited.");
+		Text coderText = new Text("Send feedback to kingcodyj at gmail dot come");
 		coderText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
 
 		grid.add(aboutText, 0, 0);
