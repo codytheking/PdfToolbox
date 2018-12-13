@@ -4,7 +4,7 @@ Simple tools for working with PDF files.
 
 ## Current Tools
 
--Merge two PDF files.
+* Merge two PDF files.
 
 ## Downloads
 
@@ -12,5 +12,5 @@ Simple tools for working with PDF files.
 
 ## Tutorials
 
--[Merge](https://youtu.be/x80Fa8LqETg)
+* [Merge](https://youtu.be/x80Fa8LqETg)
 
