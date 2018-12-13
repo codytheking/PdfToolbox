@@ -1,9 +1,10 @@
 # PDF Toolbox
 
-#### Simple tools for working with PDF files.
+Simple tools for working with PDF files.
 
 ## Current Tools
-Merge two PDF files.
+
+-Merge two PDF files.
 
 ## Downloads
 
@@ -11,5 +12,5 @@ Merge two PDF files.
 
 ## Tutorials
 
-[Merge](https://youtu.be/x80Fa8LqETg)
+-[Merge](https://youtu.be/x80Fa8LqETg)
 
