@@ -246,7 +246,7 @@ public class PdfUtils extends Application
 
 		Text aboutText = new Text("King's PDF Toolbox");
 		aboutText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-		Text coderText = new Text("Send feedback to kingcodyj at gmail dot come");
+		Text coderText = new Text("Send feedback to kingcodyj at gmail dot com");
 		coderText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
 
 		grid.add(aboutText, 0, 0);
