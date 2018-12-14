@@ -7,9 +7,13 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
 
 import javafx.application.Application;
 import javafx.stage.DirectoryChooser;
@@ -36,7 +40,8 @@ import javafx.event.EventHandler;
 public class PdfUtils extends Application
 {
 	private GridPane pane;
-	private Button chooseDirBtn, chooseF1Btn, chooseF2Btn, mergeBtn;
+	private Button chooseDirBtn, chooseF1Btn, chooseF2Btn, mergeBtn, partialMergeBtn;
+	private TextField fn1TextField;
 
 	private File fn1, fn2, newFn;
 
@@ -47,6 +52,8 @@ public class PdfUtils extends Application
 		chooseF1Btn = new Button("Select");
 		chooseF2Btn = new Button("Select");
 		mergeBtn = new Button("Merge");
+		partialMergeBtn = new Button("Partial Merge");
+		fn1TextField = new TextField();
 	}
 
 	@Override
@@ -86,33 +93,36 @@ public class PdfUtils extends Application
 
 		pane.getChildren().add(menuBar);
 		primaryStage.setScene(scene);
-		primaryStage.setWidth(300);
+		primaryStage.setWidth(450);
 		primaryStage.setHeight(300);
 
 		///////////////////////////////////////////////////
 
 		pane.add(new Label("Select file:"), 0, 0); 
+		pane.add(fn1TextField, 1, 0);
 		pane.add(chooseF1Btn, 1, 1);
 		Label fn1Label = new Label("No file selected");
-        fn1Label.setTextFill(Color.RED);
-        pane.add(fn1Label, 0, 1);
+		fn1Label.setTextFill(Color.RED);
+		pane.add(fn1Label, 0, 1);
 
 		pane.add(new Label("Select file:"), 0, 2); 
 		pane.add(chooseF2Btn, 1, 3);
 		Label fn2Label = new Label("No file selected");
-        fn2Label.setTextFill(Color.RED);
-        pane.add(fn2Label, 0, 3);
+		fn2Label.setTextFill(Color.RED);
+		pane.add(fn2Label, 0, 3);
 
 		pane.add(new Label("Select new file:"), 0, 4); 
 		pane.add(chooseDirBtn, 1, 5);
 		Label newFnLabel = new Label("No destination selected");
-        newFnLabel.setTextFill(Color.RED);
-        pane.add(newFnLabel, 0, 5);
+		newFnLabel.setTextFill(Color.RED);
+		pane.add(newFnLabel, 0, 5);
 
 		pane.add(mergeBtn, 1, 7);  // doesn't add blank rows
 		Label successLabel = new Label("");
-        successLabel.setTextFill(Color.RED);
-        pane.add(successLabel, 0, 7);
+		successLabel.setTextFill(Color.RED);
+		pane.add(successLabel, 0, 7);
+
+		pane.add(partialMergeBtn, 1, 8);
 
 		PDFMergerUtility ut = new PDFMergerUtility();
 
@@ -124,8 +134,8 @@ public class PdfUtils extends Application
 				FileChooser fileChooser = new FileChooser();
 				File fn = fileChooser.showSaveDialog(primaryStage);
 
-				if(fn != null){
-					System.out.println(fn.getAbsolutePath());
+				if(fn != null)
+				{
 					newFn = fn;
 					newFnLabel.setText(newFn.toString());
 					newFnLabel.setTextFill(Color.BLACK);
@@ -142,8 +152,8 @@ public class PdfUtils extends Application
 				fileChooser.setTitle("Choose File");
 				File fn = fileChooser.showOpenDialog(primaryStage);
 
-				if(fn != null){
-					System.out.println(fn.getAbsolutePath());
+				if(fn != null)
+				{
 					fn1 = fn;
 					fn1Label.setText(fn1.toString());
 					fn1Label.setTextFill(Color.BLACK);
@@ -160,8 +170,8 @@ public class PdfUtils extends Application
 				fileChooser.setTitle("Choose File");
 				File fn = fileChooser.showOpenDialog(primaryStage);
 
-				if(fn != null){
-					System.out.println(fn.getAbsolutePath());
+				if(fn != null)
+				{
 					fn2 = fn;
 					fn2Label.setText(fn2.toString());
 					fn2Label.setTextFill(Color.BLACK);
@@ -174,35 +184,123 @@ public class PdfUtils extends Application
 			@Override
 			public void handle(ActionEvent e)
 			{
-				try 
+				if(fn1 != null && fn2 != null && newFn != null)
 				{
-					ut.addSource(new File(FilenameUtils.normalize(fn1.toString())));
-					ut.addSource(new File(FilenameUtils.normalize(fn2.toString())));
-				} 
-				catch (FileNotFoundException e1) 
-				{
-					e1.printStackTrace();
-				}
+					try 
+					{
+						ut.addSource(new File(FilenameUtils.normalize(fn1.toString())));
+						ut.addSource(new File(FilenameUtils.normalize(fn2.toString())));
+						ut.setDestinationFileName(newFn.toString());
+					} 
+					catch (FileNotFoundException e1) 
+					{
+						e1.printStackTrace();
+					}
 
-				ut.setDestinationFileName(newFn.toString());
-				try 
-				{
-					ut.mergeDocuments(null);
-				} 
-				catch (IOException e1) 
-				{
-					successLabel.setText("Error with merge.");
-					e1.printStackTrace();
-					return;
-				}
+					try 
+					{
+						ut.mergeDocuments(null);
+					} 
+					catch (IOException e1) 
+					{
+						successLabel.setText("Error with merge.");
+						successLabel.setTextFill(Color.RED);
+						e1.printStackTrace();
+						return;
+					}
 
-				System.out.println("Success!\n");
-				successLabel.setText("Success!");
-				successLabel.setTextFill(Color.BLACK);
+					successLabel.setText("Success!");
+					successLabel.setTextFill(Color.BLACK);
+				}
+				else
+				{
+					successLabel.setText("Select your files.");
+					successLabel.setTextFill(Color.RED);
+				}
+			}
+		});
+
+		partialMergeBtn.setOnAction(new EventHandler<ActionEvent>()
+		{
+			@Override
+			public void handle(ActionEvent e)
+			{
+				//Reads in pdf document  
+				PDDocument pdDoc = null;
+
+				//Creates a new pdf document  
+				PDDocument document = null;
+
+				//Adds specific page "i" where "i" is the page number and then saves the new pdf document  
+				if(fn1 != null && newFn != null)
+				{
+					try 
+					{  
+						pdDoc = PDDocument.load(new File(FilenameUtils.normalize(fn1.toString())));
+						document = new PDDocument();   
+						
+						List<Integer> range = getPageRange(1);
+						for(int i = 0; i < range.size(); i++)
+						{
+							document.addPage((PDPage) pdDoc.getDocumentCatalog().getPages().get(range.get(i)));
+						}
+						document.save(new File(FilenameUtils.normalize(newFn.toString())));  
+						document.close();
+					}
+					catch (IOException e1) 
+					{
+						successLabel.setText("Error with merge.");
+						successLabel.setTextFill(Color.RED);
+						e1.printStackTrace();
+						return;
+					}
+
+					successLabel.setText("Success!");
+					successLabel.setTextFill(Color.BLACK);
+				}
+				else
+				{
+					successLabel.setText("Select your files.");
+					successLabel.setTextFill(Color.RED);
+				}
 			}
 		});
 
 		primaryStage.show();
+	}
+	
+	private List<Integer> getPageRange(int file)
+	{
+		String text = "";
+		
+		if(file == 1)
+			text = fn1TextField.getText();
+		//if(file == 1)
+			//return fn2TextField.getText();
+		
+		List<Integer> range = new ArrayList<Integer>();
+		String[] values = text.split(",");
+		
+		for(int i = 0; i < values.length; i++)
+		{
+			values[i] = values[i].trim();
+			int dash = values[i].indexOf("-");
+			if(dash != -1)
+			{
+				int start = Integer.parseInt(values[i].substring(0, dash)) - 1;
+				int end = Integer.parseInt(values[i].substring(dash+1)) - 1;
+				for(int j = start; j <= end; j++)
+				{
+					range.add(j);
+				}
+			}
+			else if(!values[i].equals(""))
+			{
+				range.add(Integer.parseInt(values[i]) - 1); 
+			}
+		}
+		
+		return range;
 	}
 
 	private void aboutMenuAction()
@@ -260,4 +358,3 @@ public class PdfUtils extends Application
 		Application.launch(args);
 	}
 }
-
