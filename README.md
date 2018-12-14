@@ -8,7 +8,7 @@ Simple tools for working with PDF files.
 
 ## Downloads
 
-[v0.0.1](https://github.com/codytheking/PdfToolbox/raw/master/PdfMerge.jar)
+[v0.0.1](https://github.com/codytheking/PdfToolbox/raw/partial-pdfs/PDF_Toolbox_v0.0.1.jar)
 
 ## Tutorials
 
